@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>מאגר הלכה</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
+      background: #f5f0e8;
+      color: #2c1810;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      direction: rtl;
+    }
+
+    /* ─── Header ─── */
+    .app-header {
+      background: #1a0a00;
+      color: #f5d78e;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    }
+
+    .header-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    /* Header buttons — reversed: menu on LEFT, search on RIGHT (swapped from default RTL) */
+    .header-btn {
+      background: none;
+      border: none;
+      color: #f5d78e;
+      font-size: 1.4rem;
+      cursor: pointer;
+      padding: 6px 10px;
+      border-radius: 8px;
+      transition: background 0.2s;
+    }
+    .header-btn:hover {
+      background: rgba(245,215,142,0.15);
+    }
+
+    /* ─── Content ─── */
+    .content {
+      flex: 1;
+      padding: 16px;
+      padding-bottom: 80px;
+      overflow-y: auto;
+    }
+
+    .section-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #5a3010;
+      margin-bottom: 12px;
+      padding-bottom: 6px;
+      border-bottom: 2px solid #c8a050;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 12px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+      border-right: 4px solid #c8a050;
+    }
+
+    .card h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #2c1810;
+      margin-bottom: 6px;
+    }
+
+    .card p {
+      font-size: 0.9rem;
+      color: #555;
+      line-height: 1.6;
+    }
+
+    .card .source {
+      font-size: 0.8rem;
+      color: #888;
+      margin-top: 8px;
+      font-style: italic;
+    }
+
+    /* ─── Bottom Navigation — REVERSED (row-reverse swaps button sides) ─── */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #1a0a00;
+      display: flex;
+      flex-direction: row-reverse;   /* ← reversed order */
+      justify-content: space-around;
+      align-items: center;
+      padding: 8px 0 calc(8px + env(safe-area-inset-bottom));
+      box-shadow: 0 -2px 8px rgba(0,0,0,0.3);
+      z-index: 100;
+    }
+
+    .nav-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      background: none;
+      border: none;
+      color: #a08060;
+      font-size: 0.65rem;
+      cursor: pointer;
+      padding: 6px 12px;
+      border-radius: 10px;
+      transition: color 0.2s;
+      min-width: 60px;
+    }
+
+    .nav-btn .icon {
+      font-size: 1.4rem;
+      line-height: 1;
+    }
+
+    .nav-btn.active {
+      color: #f5d78e;
+    }
+
+    .nav-btn:hover {
+      color: #f5d78e;
+    }
+
+    /* Pages */
+    .page { display: none; }
+    .page.active { display: block; }
+
+    .search-bar {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .search-bar input {
+      flex: 1;
+      padding: 10px 14px;
+      border: 2px solid #c8a050;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      direction: rtl;
+      background: #fff;
+    }
+
+    .search-bar input:focus {
+      outline: none;
+      border-color: #8b5e20;
+    }
+
+    .settings-row {
+      background: #fff;
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+
+    .settings-row span {
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    .toggle {
+      width: 44px;
+      height: 24px;
+      background: #c8a050;
+      border-radius: 12px;
+      cursor: pointer;
+      position: relative;
+      transition: background 0.2s;
+    }
+
+    .toggle::after {
+      content: '';
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      background: #fff;
+      border-radius: 50%;
+      top: 3px;
+      right: 3px;
+      transition: right 0.2s;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="app-header">
+    <!-- Reversed: search on RIGHT side, menu on LEFT side -->
+    <button class="header-btn" onclick="toggleMenu()" title="תפריט">&#9776;</button>
+    <span class="header-title">&#128218; מאגר הלכה</span>
+    <button class="header-btn" onclick="focusSearch()" title="חיפוש">&#128269;</button>
+  </header>
+
+  <!-- Content -->
+  <main class="content">
+
+    <!-- Home Page -->
+    <div id="page-home" class="page active">
+      <div class="section-title">שאלות אחרונות</div>
+
+      <div class="card">
+        <h3>זמן ברכות השחר</h3>
+        <p>זמנן מעלות השחר, ומי שלא בירך עד הנץ — יכול לברך עד חצות.</p>
+        <div class="source">שו"ע או"ח סימן מ"ז סעיף י"ג; מ"ב שם ס"ק ל'</div>
+      </div>
+
+      <div class="card">
+        <h3>נטילת ידיים שחרית</h3>
+        <p>חייב ליטול ידיו שלוש פעמים לסירוגין קודם התפילה.</p>
+        <div class="source">שו"ע או"ח סימן ד' סעיף ב'; מ"ב שם ס"ק ו'</div>
+      </div>
+
+      <div class="card">
+        <h3>זמן תפילת שחרית</h3>
+        <p>לכתחילה — עד סוף ד' שעות. בדיעבד — עד חצות.</p>
+        <div class="source">שו"ע או"ח סימן פ"ט; מ"ב שם ס"ק א'</div>
+      </div>
+    </div>
+
+    <!-- Search Page -->
+    <div id="page-search" class="page">
+      <div class="search-bar">
+        <input id="search-input" type="text" placeholder="חפש שאלה הלכתית...">
+      </div>
+      <div class="section-title">חיפוש בהלכות</div>
+      <div class="card">
+        <h3>הזן שאלה בשדה החיפוש</h3>
+        <p>ניתן לחפש לפי נושא, מילות מפתח, או ציטוט מהשו"ע.</p>
+      </div>
+    </div>
+
+    <!-- Favorites Page -->
+    <div id="page-favorites" class="page">
+      <div class="section-title">מועדפים</div>
+      <div class="card">
+        <h3>אין שאלות שמורות</h3>
+        <p>לחץ על &#9733; ליד שאלה כדי לשמור אותה כאן.</p>
+      </div>
+    </div>
+
+    <!-- Settings Page -->
+    <div id="page-settings" class="page">
+      <div class="section-title">הגדרות</div>
+      <div class="settings-row">
+        <span>פסיקת אשכנז</span>
+        <div class="toggle"></div>
+      </div>
+      <div class="settings-row">
+        <span>הצג מקורות מלאים</span>
+        <div class="toggle"></div>
+      </div>
+      <div class="settings-row">
+        <span>מצב לילה</span>
+        <div class="toggle"></div>
+      </div>
+    </div>
+
+  </main>
+
+  <!--
+    Bottom Navigation — REVERSED
+    Original order (LTR):  [ראשי] [חיפוש] [מועדפים] [הגדרות]
+    Reversed order (RTL):  [הגדרות] [מועדפים] [חיפוש] [ראשי]
+    Achieved via: flex-direction: row-reverse
+  -->
+  <nav class="bottom-nav">
+    <button class="nav-btn" id="btn-home" onclick="showPage('home')">
+      <span class="icon">&#127968;</span>
+      <span>ראשי</span>
+    </button>
+    <button class="nav-btn" id="btn-search" onclick="showPage('search')">
+      <span class="icon">&#128269;</span>
+      <span>חיפוש</span>
+    </button>
+    <button class="nav-btn" id="btn-favorites" onclick="showPage('favorites')">
+      <span class="icon">&#11088;</span>
+      <span>מועדפים</span>
+    </button>
+    <button class="nav-btn" id="btn-settings" onclick="showPage('settings')">
+      <span class="icon">&#9881;</span>
+      <span>הגדרות</span>
+    </button>
+  </nav>
+
+  <script>
+    function showPage(name) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('page-' + name).classList.add('active');
+      document.getElementById('btn-' + name).classList.add('active');
+    }
+
+    function focusSearch() {
+      showPage('search');
+      setTimeout(() => document.getElementById('search-input').focus(), 50);
+    }
+
+    function toggleMenu() {
+      alert('תפריט ראשי');
+    }
+
+    // Set initial active state
+    document.getElementById('btn-home').classList.add('active');
+  </script>
+
+</body>
+</html>
