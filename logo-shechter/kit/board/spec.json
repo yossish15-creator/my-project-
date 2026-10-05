@@ -1,0 +1,56 @@
+{
+  "brand": "יוסי שכטר",
+  "tagline": "רואה החשבון. שלך.",
+  "brief": "Independent CPA serving private clients and small businesses. Evolve the existing bar-chart logo: keep its colours, its bars and its tagline, but turn the generic chart into an ownable mark.",
+  "adjectives": [
+    "trustworthy",
+    "precise",
+    "personal",
+    "calm"
+  ],
+  "criteria": "Success: recognisable to current clients, distinct from generic accounting bar charts, legible at 16 px, works in one colour and reversed.",
+  "mockups": [
+    "business-card",
+    "website",
+    "signage",
+    "social",
+    "app-icon",
+    "favicon-tab"
+  ],
+  "nav": [
+    "שירותים",
+    "אודות",
+    "צור קשר"
+  ],
+  "brand_color": "#0F4560",
+  "tile_color": "#0F4560",
+  "greyscale": false,
+  "final": true,
+  "deck_title": "final identity",
+  "concepts": [
+    {
+      "name": "Yesh — יש",
+      "symbol": "../master/shechter-symbol-color.svg",
+      "lockup": "../master/shechter-horizontal-color.svg",
+      "stacked": "../master/shechter-stacked-color.svg",
+      "avatar": "../master/shechter-symbol-small-color.svg",
+      "symbol_on_tile": "../master/shechter-symbol-reverse.svg",
+      "symbol_on_dark": "../master/shechter-symbol-reverse.svg",
+      "lockup_on_dark": "../master/shechter-horizontal-reverse.svg",
+      "stacked_on_dark": "../master/shechter-stacked-reverse.svg",
+      "stacked_on_tile": "../master/shechter-stacked-reverse.svg",
+      "idea": "The familiar bars now spell the word יש: three bars joined into a shin, the short teal bar is the yod — Yossi Shechter's initials and a positive balance.",
+      "rationale": [
+        "Keeps the bars, colours and tagline clients already know",
+        "Turns a generic chart into a mark only this office can own",
+        "Separate heavier small-size cut for favicons and profile pictures"
+      ]
+    }
+  ],
+  "recommendation": "Use the horizontal lockup as the primary logo, the stacked version for square spaces and profile pictures, and the symbol alone for icons.",
+  "next_steps": [
+    "Approve the final artwork",
+    "Update website, WhatsApp/Facebook profile and business cards",
+    "Professional trademark check before printing"
+  ]
+}
